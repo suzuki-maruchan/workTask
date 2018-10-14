@@ -20,6 +20,7 @@ Sub makeAggregateTable()
     Dim columnId As String                                    'セルの列番号(アルファベット)
     Dim aggregateTableName As String                '集計表の名前
     
+    Application.ScreenUpdating = False
     'マクロブックのブック名、シート名、日付名、キーワード、試験仕様書数をprogressManageent.xlsmから取得
     macroWbName = Range("C3").Value
     macroWsName = Range("C4").Value
@@ -102,7 +103,7 @@ L1:
             count = 0
         End If
         Next l
-        
+        Application.ScreenUpdating = True
         MsgBox "進捗管理表の作成が完了しました。"
 End Sub
 
@@ -113,6 +114,8 @@ Sub addAggregateTable()
     Dim path As String
     Dim addWsName As String
     Dim testingSpecificationName As String
+    
+    Application.ScreenUpdating = False
     
     wbName = ActiveSheet.Range("C3").Value
     wsName = ActiveSheet.Range("C4").Value
@@ -163,6 +166,8 @@ L2:
         testingSpecificationName = Dir()
     Loop
     
+    Application.ScreenUpdating = True
+    
     MsgBox "シートの追加が完了しました。"
 End Sub
 
@@ -188,6 +193,8 @@ Sub transcription()
     Dim num As Long
     Dim overWritingFlag As Boolean
     Dim rslt As VbMsgBoxResult
+    
+    Application.ScreenUpdating = False
     
     macroWb = ActiveSheet.Range("C3")
     macroWs = ActiveSheet.Range("C4")
@@ -278,6 +285,8 @@ L3:
     Dim timeStamp As String
     timeStamp = Format(Now, "yyyy/mm/dd/　hh:mm:ss")
     Workbooks(variationMngWb).Worksheets(variationMngWs).timeStampCells.Value = "更新日時：" & timeStamp
+    
+    Application.ScreenUpdating = False
     
     MsgBox "転記完了"
 End Sub
