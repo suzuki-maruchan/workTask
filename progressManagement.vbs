@@ -396,6 +396,6 @@ Function checkFilterModeStatus(ByVal ws As Worksheet)
     
     'i‚è‚İ‚³‚ê‚Ä‚¢‚éê‡
     If (ws.AutoFilter.FilterMode = True) Then
-        ws.AutoFilter.FilterMode = False
+        ws.AutoFilterMode = False
     End If
 End Function
