@@ -176,6 +176,7 @@ Sub transcription()
     Dim variationMngWs As String
     Dim testingSpecification As String
     Dim aggregateTableName As String
+    Dim timeStampCells As Range
     Dim searchWord As String
     Dim i As Long
     Dim wsName As String
@@ -195,6 +196,7 @@ Sub transcription()
     variationMngWb = ActiveSheet.Range("C7")
     variationMngWs = ActiveSheet.Range("C8")
     aggregateTableName = ActiveSheet.Range("C9")
+    timeStampCells = ActiveSheet.Range("C10")
     
     '前日分を上書きするか確認する
     rslt = MsgBox("前日分を上書きしますか？", Buttons:=vbYesNo)
@@ -272,6 +274,8 @@ L3:
         testingSpecification = Dir()
     Loop
     
+    'タイムスタンプを記入
+    Workbooks(variationMngWb).Worksheets(variationMngWs).timeStampCells.Value = Format(Now, "yyyy/mm/dd/　hh:mm:ss")
     MsgBox "転記完了"
 End Sub
 
