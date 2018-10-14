@@ -208,7 +208,7 @@ Sub transcription()
     Call openTestingSpecification(pathOfVariationMngWb, variationMngWb)
     
     'overWritingFlag=trueのとき、データを前日項目に移動
-    If overWritingFlag = False Then
+    If overWritingFlag = True Then
         Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:H10000").Copy Range("I9")
     End If
     
