@@ -185,6 +185,8 @@ Sub transcription()
     Dim remaining As String
     Dim sum As String
     Dim num As Long
+    Dim overWritingFlag As Boolean
+    Dim rslt As VbMsgBoxResult
     
     macroWb = ActiveSheet.Range("C3")
     macroWs = ActiveSheet.Range("C4")
@@ -194,11 +196,21 @@ Sub transcription()
     variationMngWs = ActiveSheet.Range("C8")
     aggregateTableName = ActiveSheet.Range("C9")
     
+    '前日分を上書きするか確認する
+    rslt = MsgBox("前日分を上書きしますか？", Buttons:=vbYesNo)
+    If rslt = vbYes Then
+        overWritingFlag = True
+    Else
+        overWritingFlag = False
+    End If
+    
     '進捗管理表_バリエーション.xlsxを開く
     Call openTestingSpecification(pathOfVariationMngWb, variationMngWb)
     
-    '昨日分のデータを前日項目に移動
-    Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:H10000").Copy Range("I9")
+    'overWritingFlag=trueのとき、データを前日項目に移動
+    If overWritingFlag = True Then
+        Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:H10000").Copy Range("I9")
+    End If
     
     'ここから転記を開始する
     '集計対象の試験仕様書名を取得
