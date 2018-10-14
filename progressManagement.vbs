@@ -275,7 +275,10 @@ L3:
     Loop
     
     'タイムスタンプを記入
-    Workbooks(variationMngWb).Worksheets(variationMngWs).timeStampCells.Value = Format(Now, "yyyy/mm/dd/　hh:mm:ss")
+    Dim timeStamp As String
+    timeStamp = Format(Now, "yyyy/mm/dd/　hh:mm:ss")
+    Workbooks(variationMngWb).Worksheets(variationMngWs).timeStampCells.Value = "更新日時：" & timeStamp
+    
     MsgBox "転記完了"
 End Sub
 
