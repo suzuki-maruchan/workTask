@@ -24,8 +24,7 @@ Sub makeAggregateTable()
     'マクロブックのブック名、シート名、日付名、キーワード、試験仕様書数をprogressManageent.xlsmから取得
     macroWbName = Range("C3").Value
     macroWsName = Range("C4").Value
-    Workbooks(macroWbName).Worksheets(macroWsName).Range("B10").Select
-    wbNum = Range(Selection, Selection.End(xlDown)).Rows.count
+    wbNum = Range(Workbooks(macroWbName).Worksheets(macroWsName).Range("B10"), Workbooks(macroWbName).Worksheets(macroWsName).Range("B10").End(xlDown)).Rows.count
     executingDate = Workbooks(macroWbName).Worksheets(macroWsName).Range("C6").Value
     variationKW = Workbooks(macroWbName).Worksheets(macroWsName).Range("C7").Value
     Debug.Print ("マクロのブック名：" & macroWbName)
@@ -181,7 +180,7 @@ Sub transcription()
     Dim variationMngWs As String
     Dim testingSpecification As String
     Dim aggregateTableName As String
-    Dim timeStampCells As Range
+    Dim timeStampCells As String
     Dim searchWord As String
     Dim i As Long
     Dim wsName As String
@@ -241,8 +240,7 @@ Sub transcription()
         
         '転記するテストケースの数を計算する
         Workbooks(testingSpecification).Worksheets(aggregateTableName).Activate
-        Workbooks(testingSpecification).Worksheets(aggregateTableName).Range("B4").Select
-        num = Range(Selection, Selection.End(xlDown)).Rows.count
+        num = Range(Workbooks(testingSpecification).Worksheets(aggregateTableName).Range("B4"), Workbooks(testingSpecification).Worksheets(aggregateTableName).Range("B4").End(xlDown)).Rows.count
         Debug.Print ("ケース数：" & num)
         
         For i = 0 To num - 1
@@ -284,7 +282,7 @@ L3:
     'タイムスタンプを記入
     Dim timeStamp As String
     timeStamp = Format(Now, "yyyy/mm/dd/　hh:mm:ss")
-    Workbooks(variationMngWb).Worksheets(variationMngWs).timeStampCells.Value = "更新日時：" & timeStamp
+    Workbooks(variationMngWb).Worksheets(variationMngWs).Range(timeStampCells).Value = "更新日時：" & timeStamp
     
     Application.ScreenUpdating = False
     
@@ -323,15 +321,12 @@ Function usingRng(ByVal wbName As String, ByVal wsName As String) As Range
 End Function
 
 Function findArea(ByVal rng As Range) As Range
-    rng.Select
-    
     'ケースが1件のみかチェック
     If Cells(rng.Row, rng.Column + 1).Value <> "" Then
-        Selection.End(xlToRight).Select
+        Set findArea = Range(rng, rng.End(xlToRight))
+    Else
+        Set findArea = Range(rng, findArea.End(xlDown).End(xlToRight))
     End If
-    Set endCellAdress = Selection.End(xlDown)
-       
-    Set findArea = Range(rng, endCellAdress)
 End Function
 
 Function writingInAggregateTable(ByVal i As Integer, _
