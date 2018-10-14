@@ -206,6 +206,7 @@ Sub transcription()
     
     '進捗管理表_バリエーション.xlsxを開く
     Call openTestingSpecification(pathOfVariationMngWb, variationMngWb)
+    Call checkFilterModeStatus(Worksheets(variationMngWb))
     
     'overWritingFlag=trueのとき、データを前日項目に移動
     If overWritingFlag = True Then
@@ -369,4 +370,16 @@ Function isSheetDuplicationCheck(ByVal wsName As String) As Boolean
     For Each ws In Worksheets
         If ws.Name = wsName Then isSheetDuplicationCheck = True
     Next ws
+End Function
+
+Function checkFilterModeStatus(ByVal ws As Worksheet)
+    'オートフィルタ未設定時は処理を抜ける
+    If (ws.AutoFilterMode = False) Then
+        Exit Function
+    End If
+    
+    '絞り込みされている場合
+    If (ws.AutoFilter.FilterMode = True) Then
+        ws.AutoFilter.FilterMode = False
+    End If
 End Function
