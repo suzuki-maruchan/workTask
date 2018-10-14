@@ -206,7 +206,7 @@ Sub transcription()
     
     '進捗管理表_バリエーション.xlsxを開く
     Call openTestingSpecification(pathOfVariationMngWb, variationMngWb)
-    Call checkFilterModeStatus(Worksheets(variationMngWb))
+    Call checkFilterModeStatus(Worksheets(variationMngWs))
     
     'overWritingFlag=trueのとき、データを前日項目に移動
     If overWritingFlag = True Then
