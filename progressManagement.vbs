@@ -296,7 +296,11 @@ End Function
 
 Function findArea(ByVal rng As Range) As Range
     rng.Select
-    Selection.End(xlToRight).Select
+    
+    'ケースが1件のみかチェック
+    If Cells(rng.Row, rng.Column + 1).Value <> "" Then
+        Selection.End(xlToRight).Select
+    End If
     Set endCellAdress = Selection.End(xlDown)
        
     Set findArea = Range(rng, endCellAdress)
