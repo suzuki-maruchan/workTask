@@ -24,9 +24,13 @@ Sub makeAggregateTable()
     'マクロブックのブック名、シート名、日付名、キーワード、試験仕様書数をprogressManageent.xlsmから取得
     macroWbName = Range("C3").Value
     macroWsName = Range("C4").Value
-    wbNum = Range(Workbooks(macroWbName).Worksheets(macroWsName).Range("B10"), Workbooks(macroWbName).Worksheets(macroWsName).Range("B10").End(xlDown)).Rows.count
-    executingDate = Workbooks(macroWbName).Worksheets(macroWsName).Range("C6").Value
-    variationKW = Workbooks(macroWbName).Worksheets(macroWsName).Range("C7").Value
+    If Range("B11").Value = "" Then
+        wbNum = 1
+    Else
+        wbNum = Range(Workbooks(macroWbName).Worksheets(macroWsName).Range("B10"), Workbooks(macroWbName).Worksheets(macroWsName).Range("B10").End(xlDown)).Rows.count
+    End If
+    variationKW = Workbooks(macroWbName).Worksheets(macroWsName).Range("C6").Value
+    executingDate = Workbooks(macroWbName).Worksheets(macroWsName).Range("C7").Value
     Debug.Print ("マクロのブック名：" & macroWbName)
     Debug.Print ("マクロのシート名：" & macroWsName)
     Debug.Print ("試験仕様書数：" & wbNum)
@@ -142,19 +146,11 @@ L2:
         Debug.Print ("開く試験仕様書名：" & testingSpecificationName)
         Call openTestingSpecification(path, testingSpecificationName)
         
-        '追加するシートと同名のシートが存在したときのエラーハンドリング
+        '//追加するシートと同名のシートが存在したときは削除する
         If isSheetDuplicationCheck(addWsName) = True Then
-            MsgBox "試験仕様書名：" & testingSpecificationName & "にはシート名：" & addWsName & "はすでに存在します。処理をskipします。", vbInformation
-            Call closeTestingSpecification(testingSpecificationName)
-            testingSpecificationName = Dir()
-            
-            '取得した最後の試験仕様書にシートがすでに存在していた時のエラーハンドリング
-            If testingSpecificationName = "" Then
-                Exit Do
-            End If
-            
-            '最後の試験仕様書でなければ処理の最初に戻って続行
-            GoTo L2
+            Application.DisplayAlerts = False
+            Workbooks(testingSpecificationName).Worksheets(addWsName).Delete
+            Application.DisplayAlerts = True
         End If
             
         'シートを追加
@@ -186,6 +182,10 @@ Sub transcription()
     Dim wsName As String
     Dim caseNum As String
     Dim executingDate As String
+    Dim result As String
+    Dim faultNum As String
+    Dim tester As String
+    Dim executingKubun As String
     Dim achievement As String
     Dim remaining As String
     Dim sum As String
@@ -218,7 +218,7 @@ Sub transcription()
     
     'overWritingFlag=trueのとき、データを前日項目に移動
     If overWritingFlag = True Then
-        Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:H10000").Copy Range("I9")
+        Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:L10000").Copy Range("M9")
     End If
     
     'ここから転記を開始する
@@ -249,15 +249,19 @@ L3:
             wsName = Cells(4 + i, 2).Value
             caseNum = Cells(4 + i, 3).Value
             executingDate = Cells(4 + i, 4).Value
-            achievement = Cells(4 + i, 5).Value
-            remaining = Cells(4 + i, 6).Value
-            sum = Cells(4 + i, 7).Value
+            result = Cells(4 + i, 5).Value
+            faultNum = Cells(4 + i, 6).Value
+            tester = Cells(4 + i, 7).Value
+            executingKubun = Cells(4 + i, 8).Value
+            achievement = Cells(4 + i, 9).Value
+            remaining = Cells(4 + i, 10).Value
+            sum = Cells(4 + i, 11).Value
             
             '転記先のセル位置を取得
             searchWord = testingSpecification & wsName & caseNum
             Debug.Print ("検索ワード" & searchWord)
             'Workbooks(variationMngWb).Worksheets(variationMngWs).Activate
-            Set copyTarget = findCells(searchWord, Workbooks(variationMngWb).Worksheets(variationMngWs).Range("T:T"))
+            Set copyTarget = findCells(searchWord, Workbooks(variationMngWb).Worksheets(variationMngWs).Range("AB:AB"))
             
             '転記先のセル位置を取得できなかったときのエラーハンドリング
             If copyTarget Is Nothing Then
@@ -268,9 +272,13 @@ L3:
             
             '転記
             Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 5) = executingDate
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 6) = achievement
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 7) = remaining
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 8) = sum
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 6) = result
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 7) = faultNum
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 8) = tester
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 9) = executingKubun
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 10) = achievement
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 11) = remaining
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 12) = sum
         Next i
         
         '転記が完了した試験仕様書を閉じる
@@ -322,10 +330,11 @@ End Function
 
 Function findArea(ByVal rng As Range) As Range
     'ケースが1件のみかチェック
-    If Cells(rng.Row, rng.Column + 1).Value <> "" Then
-        Set findArea = Range(rng, rng.End(xlToRight))
+    If Cells(rng.Row, rng.Column + 1).Value = "" Then
+        Set findArea = Range(rng, rng.End(xlDown))
+        Debug.Print ("ケースは1件と認識")
     Else
-        Set findArea = Range(rng, findArea.End(xlDown).End(xlToRight))
+        Set findArea = Range(rng, rng.End(xlDown).End(xlToRight))
     End If
 End Function
 
@@ -343,13 +352,21 @@ Function writingInAggregateTable(ByVal i As Integer, _
         'セルの列番号を数字から英語に変換
         columnId = columnNumberToAlphabet(toCellsInVariationRng.Column + i)
         '実行日を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=TEXT(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row & """" & ")," & """" & "yyyy/mm/dd" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row & """" & ")=0," & """" & "未打鍵" & """" & "," & "TEXT(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row & """" & ")," & """" & "yyyy/mm/dd" & """" & "))"
+        '//実行結果を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 2 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 2 & """" & "))"
+        '//障害番号を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 1 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 1 & """" & "))"
+        '//実行者を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 1 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 1 & """" & "))"
+        '//実行区分を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 5 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 5 & """" & "))"
         'テストケースに紐づく"■"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "■" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "■" & """" & ")"
         'テストケースに紐づく"□"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "□" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 10) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "□" & """" & ")"
         'テストケースに紐づくバリエーション数を計測する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=SUM(E" & (4 + i + count) & ":F" & (4 + i + count) & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 11) = "=SUM(I" & (4 + i + count) & ":J" & (4 + i + count) & ")"
 End Function
 
 Function isSameTestingSpecification(ByVal wb As String, ByVal ws As String, ByVal i As Integer) As Boolean
@@ -371,9 +388,13 @@ Function addNewWorksheets(ByVal wbName As String, ByVal wsName As String)
     Workbooks(wbName).Worksheets(wsName).Range("B3") = "シート名"
     Workbooks(wbName).Worksheets(wsName).Range("C3") = "ケース番号"
     Workbooks(wbName).Worksheets(wsName).Range("D3") = "実行日"
-    Workbooks(wbName).Worksheets(wsName).Range("E3") = "■の数"
-    Workbooks(wbName).Worksheets(wsName).Range("F3") = "□の数"
-    Workbooks(wbName).Worksheets(wsName).Range("G3") = "総数"
+    Workbooks(wbName).Worksheets(wsName).Range("E3") = "実行結果"
+    Workbooks(wbName).Worksheets(wsName).Range("F3") = "障害番号"
+    Workbooks(wbName).Worksheets(wsName).Range("G3") = "実行者"
+    Workbooks(wbName).Worksheets(wsName).Range("H3") = "実行区分"
+    Workbooks(wbName).Worksheets(wsName).Range("I3") = "■の数"
+    Workbooks(wbName).Worksheets(wsName).Range("J3") = "□の数"
+    Workbooks(wbName).Worksheets(wsName).Range("K3") = "総数"
 End Function
 
 Function isSheetDuplicationCheck(ByVal wsName As String) As Boolean
@@ -394,3 +415,4 @@ Function checkFilterModeStatus(ByVal ws As Worksheet)
         ws.AutoFilterMode = False
     End If
 End Function
+
