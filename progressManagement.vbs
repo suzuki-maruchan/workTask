@@ -343,11 +343,11 @@ Function writingInAggregateTable(ByVal i As Integer, _
         'セルの列番号を数字から英語に変換
         columnId = columnNumberToAlphabet(toCellsInVariationRng.Column + i)
         '実行日を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=TEXT(INDIRECT(B" & (4 + i + count) & "&" & """" & "!" & columnId & inputedexecutingDateCell.Row & """" & ")," & """" & "yyyy/mm/dd" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=TEXT(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row & """" & ")," & """" & "yyyy/mm/dd" & """" & ")"
         'テストケースに紐づく"■"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=COUNTIF(INDIRECT(B" & (4 + i + count) & "&" & """" & "!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "■" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "■" & """" & ")"
         'テストケースに紐づく"□"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=COUNTIF(INDIRECT(B" & (4 + i + count) & "&" & """" & "!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "□" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "□" & """" & ")"
         'テストケースに紐づくバリエーション数を計測する数式を該当セルに入力
         Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=SUM(E" & (4 + i + count) & ":F" & (4 + i + count) & ")"
 End Function
