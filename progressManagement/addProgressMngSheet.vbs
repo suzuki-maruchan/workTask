@@ -1,0 +1,48 @@
+Option Explicit
+
+Sub addProgressMngSheet()
+    Dim mcrWb As MacroWorkBook
+    Set mcrWb = New MacroWorkBook
+    Dim tstSpcfctn As TestSpecification
+    Set tstSpcfctn = New TestSpecification
+    '//進捗管理表シート名
+    Dim addWsName As String
+    
+    Application.ScreenUpdating = False
+    
+    tstSpcfctn.setPath (Workbooks(mcrWb.getMacroWbName).Worksheets(mcrWb.getMacroWsName).Range("C2").Value)
+    addWsName = Workbooks(mcrWb.getMacroWbName).Worksheets(mcrWb.getMacroWsName).Range("C3").Value
+    '//シート追加対象補試験仕様書を取得する
+    tstSpcfctn.setTestSpecificationName (Dir(tstSpcfctn.getPath() & "*.xls*"))
+    '//取得した試験仕様書の件数が0件だったときのエラーハンドリング
+    If tstSpcfctn.getTestSpeceficationName = "" Then
+        MsgBox "試験仕様書が" & tstSpcfctn.getPath() & "に存在しません"
+        Exit Sub
+    End If
+    ''//試験仕様書のブックを順番に開く
+    'ファイル名を順次開く
+    Do While tstSpcfctn.getTestSpecificationName <> ""
+        Call tstSpcfctn.openTestSpecification
+        '//追加するシートと同名のシートが存在したときは削除する
+        If tstSpcfctn.isSheetDuplicationCheck(addWsName) = True Then
+            '//ブックが共有か排他的かチェック。共有であれば排他的にする。
+            If Workbooks(tstSpcfctn.getTestSpecificationName()).MultiUserEditing = True Then
+               '//共有を外す
+                Workbooks(tstSpcfctn.getTestSpecificationName()).UnprotectSharing
+                Workbooks(tstSpcfctn.getTestSpecificationName()).ExclusiveAccess
+            End If
+            '//シート削除
+            Application.DisplayAlerts = False
+            Workbooks(tstSpcfctn.getTestSpecificationName()).Worksheets(addWsName).Delete
+            Application.DisplayAlerts = True
+            '//共有にする
+            '//Workbooks(tstSpcfctn.getTestSpecificationName()).ProtectSharing
+        End If
+        Call addNewWorksheets(addWsName)
+        Call closeTestingSpecification
+        tstSpcfctn.getTestSpecificationName = Dir()
+    Loop
+    
+    Application.ScreenUpdating = True
+    MsgBox "シートの追加が完了しました。"
+End Sub
