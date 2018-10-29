@@ -38,7 +38,7 @@ Sub addProgressMngSheet()
             '//共有にする
             '//Workbooks(tstSpcfctn.getTestSpecificationName()).ProtectSharing
         End If
-        Call addNewWorksheets(addWsName)
+        Call addNewWorksheets(tstSpcfctn.getTestSpecificationName(), addWsName)
         Call closeTestingSpecification
         tstSpcfctn.getTestSpecificationName = Dir()
     Loop
@@ -46,3 +46,20 @@ Sub addProgressMngSheet()
     Application.ScreenUpdating = True
     MsgBox "シートの追加が完了しました。"
 End Sub
+
+Public Function addNewWorksheets(ByVal wbName As String, ByVal wsName As String)
+    Dim newWorkSheet As Worksheet
+    '//試験仕様書の左から二番目にシートを追加する
+    Set newWorkSheet = Worksheets.Add(Before:=Worksheets(2))
+    newWorkSheet.Name = wsName
+    Workbooks(wbName).Worksheets(wsName).Range("B3") = "シート名"
+    Workbooks(wbName).Worksheets(wsName).Range("C3") = "ケース番号"
+    Workbooks(wbName).Worksheets(wsName).Range("D3") = "実行日"
+    Workbooks(wbName).Worksheets(wsName).Range("E3") = "実行結果"
+    Workbooks(wbName).Worksheets(wsName).Range("F3") = "障害番号"
+    Workbooks(wbName).Worksheets(wsName).Range("G3") = "実行者"
+    Workbooks(wbName).Worksheets(wsName).Range("H3") = "実行区分"
+    Workbooks(wbName).Worksheets(wsName).Range("I3") = "■の数"
+    Workbooks(wbName).Worksheets(wsName).Range("J3") = "□の数"
+    Workbooks(wbName).Worksheets(wsName).Range("K3") = "総数"
+End Function
