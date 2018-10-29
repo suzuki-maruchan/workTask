@@ -10,12 +10,12 @@ Sub addProgressMngSheet()
     
     Application.ScreenUpdating = False
     
-    tstSpcfctn.setPath (Workbooks(mcrWb.getMacroWbName).Worksheets(mcrWb.getMacroWsName).Range("C2").Value)
+    tstSpcfctn.setPath = Workbooks(mcrWb.getMacroWbName).Worksheets(mcrWb.getMacroWsName).Range("C2").Value
     addWsName = Workbooks(mcrWb.getMacroWbName).Worksheets(mcrWb.getMacroWsName).Range("C3").Value
     '//シート追加対象補試験仕様書を取得する
-    tstSpcfctn.setTestSpecificationName (Dir(tstSpcfctn.getPath() & "*.xls*"))
+    tstSpcfctn.setTestSpecificationName = Dir(tstSpcfctn.getPath() & "*.xls*")
     '//取得した試験仕様書の件数が0件だったときのエラーハンドリング
-    If tstSpcfctn.getTestSpeceficationName = "" Then
+    If "" = tstSpcfctn.getTestSpecificationName Then
         MsgBox "試験仕様書が" & tstSpcfctn.getPath() & "に存在しません"
         Exit Sub
     End If
@@ -39,8 +39,8 @@ Sub addProgressMngSheet()
             '//Workbooks(tstSpcfctn.getTestSpecificationName()).ProtectSharing
         End If
         Call addNewWorksheets(tstSpcfctn.getTestSpecificationName(), addWsName)
-        Call closeTestingSpecification
-        tstSpcfctn.getTestSpecificationName = Dir()
+        Call tstSpcfctn.closeTestSpecification
+        tstSpcfctn.setTestSpecificationName = Dir()
     Loop
     
     Application.ScreenUpdating = True

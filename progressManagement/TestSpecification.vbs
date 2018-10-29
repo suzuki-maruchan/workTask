@@ -23,7 +23,7 @@ Private testerName As String
 '//実行区分（手動 or 自動）
 Private executingKubun As String
 '//実績
-Private Achievement As String
+Private achievement As String
 '//残件
 Private remaining As String
 '//進捗管理表名
@@ -83,11 +83,11 @@ Public Property Get getExecutingKubun() As String
     getExecutingKubun = executingKubun
 End Property
 
-Public Property Get Achievement() As Stirng
-    getAchievement = Achievement
+Public Property Get getAchievement() As String
+    getAchievement = achievement
 End Property
 
-Public Property Get getRemaining() As Stirng
+Public Property Get getRemaining() As String
     getRemaining = remaining
 End Property
 
@@ -151,8 +151,8 @@ Public Property Let setProgressMngName(ByVal newProgressMngName As String)
 End Property
 
 Public Function openTestSpecification()
-    Workbook.Open (path & testSpecificationName)
-    Workbook(testSpecificationName).Activate
+    Workbooks.Open path & testSpecificationName
+    Workbooks(testSpecificationName).Activate
 End Function
 
 Public Function closeTestSpecification()
