@@ -148,9 +148,18 @@ L2:
         
         '//追加するシートと同名のシートが存在したときは削除する
         If isSheetDuplicationCheck(addWsName) = True Then
+            '//ブックが共有か排他的かチェック。共有であれば排他的にする。
+            If Workbooks(testingSpecificationName).MultiUserEditing = True Then
+               '//共有を外す
+                Workbooks(testingSpecificationName).UnprotectSharing
+                Workbooks(testingSpecificationName).ExclusiveAccess
+            End If
+            '//シート削除
             Application.DisplayAlerts = False
             Workbooks(testingSpecificationName).Worksheets(addWsName).Delete
             Application.DisplayAlerts = True
+            '//共有にする
+            '//Workbooks(testingSpecificationName).ProtectSharing
         End If
             
         'シートを追加
@@ -385,6 +394,7 @@ Function addNewWorksheets(ByVal wbName As String, ByVal wsName As String)
     Dim newWorkSheet As Worksheet
     Set newWorkSheet = Worksheets.add()
     newWorkSheet.Name = wsName
+    Debug.Print ("追加")
     Workbooks(wbName).Worksheets(wsName).Range("B3") = "シート名"
     Workbooks(wbName).Worksheets(wsName).Range("C3") = "ケース番号"
     Workbooks(wbName).Worksheets(wsName).Range("D3") = "実行日"
@@ -415,4 +425,3 @@ Function checkFilterModeStatus(ByVal ws As Worksheet)
         ws.AutoFilterMode = False
     End If
 End Function
-
