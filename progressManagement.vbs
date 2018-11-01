@@ -361,19 +361,19 @@ Function writingInAggregateTable(ByVal i As Integer, _
         'セルの列番号を数字から英語に変換
         columnId = columnNumberToAlphabet(toCellsInVariationRng.Column + i)
         '実行日を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row & """" & ")=0," & """" & "未打鍵" & """" & "," & "TEXT(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row & """" & ")," & """" & "yyyy/mm/dd" & """" & "))"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "=0," & """" & "未打鍵" & """" & "," & "TEXT('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "," & """" & "yyyy/mm/dd" & """" & "))"
         '//実行結果を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 2 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 2 & """" & "))"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & "=" & """" & """" & "," & """" & "未打鍵" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & " )"
         '//障害番号を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 1 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row - 1 & """" & "))"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & "=" & """" & """" & "," & """" & "未打鍵" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & " )"
         '//実行者を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 1 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 1 & """" & "))"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & "=" & """" & """" & "," & """" & "未打鍵" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & " )"
         '//実行区分を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "=IF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 5 & """" & ")=0," & """" & "-" & """" & "," & "INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & inputedexecutingDateCell.Row + 5 & """" & "))"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & "=" & """" & """" & "," & """" & "未打鍵" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & " )"
         'テストケースに紐づく"■"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "■" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & "■" & """" & ")"
         'テストケースに紐づく"□"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 10) = "=COUNTIF(INDIRECT(" & """" & "'" & """" & "&B" & (4 + i + count) & "&" & """" & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & """" & ")," & """" & "□" & """" & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 10) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & "□" & """" & ")"
         'テストケースに紐づくバリエーション数を計測する数式を該当セルに入力
         Worksheets(aggregateTableName).Cells(4 + i + count, 11) = "=SUM(I" & (4 + i + count) & ":J" & (4 + i + count) & ")"
 End Function
