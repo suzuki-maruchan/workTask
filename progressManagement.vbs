@@ -1,27 +1,27 @@
 Sub makeAggregateTable()
-    'ŠeŒ±d—l‘‚Ì‚ÉƒoƒŠƒG[ƒVƒ‡ƒ“‚ğŠÇ—‚·‚é‚½‚ß‚ÌŠÇ—ƒV[ƒg‚ğì¬‚·‚éB
-    Dim macroWbName As String                           'ƒ}ƒNƒ‚ÌƒuƒbƒN–¼
-    Dim macroWsName As String                           'ƒ}ƒNƒ‚ÌƒV[ƒg–¼
-    Dim path As String                                            'Œ±d—l‘‚Ì”z’uƒfƒBƒŒƒNƒgƒŠ
-    Dim wbNum As Integer                                     'Œ±d—l‘”
-    Dim wbName As String                                     'Œ±d—l‘‚ÌƒuƒbƒN–¼
-    Dim wsName As String                                     'Œ±d—l‘‚ÌƒV[ƒg–¼
-    Dim executingDate As String                            'Às“ú
-    Dim variationKW As String                                'ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚ğ’T‚·‚½‚ß‚ÌƒL[ƒ[ƒh
-    Dim ws As Worksheets                                      'H
-    Dim inputedexecutingDateCell As Range         'Às“ú‚ª’è‹`‚³‚ê‚Ä‚¢‚éƒZƒ‹
-    Dim toCellsInVariationRng As Range                'ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚Ì¶ã‚ÌƒZƒ‹
-    Dim variationRng As Range                              'ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA
-    Dim variationMaxNum As Integer                     'ƒoƒŠƒG[ƒVƒ‡ƒ“‚ÌÅ‘å”
-    Dim testCaseNum As Integer                           'ƒeƒXƒgƒP[ƒX”
-    Dim toCellsInVariationRngRow As Integer       'ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚Ì¶ã‚ÌƒZƒ‹‚Ìs”Ô†
-    Dim toCellsInVariationRngColumn As Integer  'ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚Ì¶ã‚ÌƒZƒ‹‚Ì—ñ”Ô†
-    Dim endCellsInVariationRng As Range             'ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚Ì‰E‰º‚ÌƒZƒ‹
-    Dim columnId As String                                    'ƒZƒ‹‚Ì—ñ”Ô†(ƒAƒ‹ƒtƒ@ƒxƒbƒg)
-    Dim aggregateTableName As String                'WŒv•\‚Ì–¼‘O
+    'å„è©¦é¨“ä»•æ§˜æ›¸ã®ã«ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ç®¡ç†ã™ã‚‹ãŸã‚ã®ç®¡ç†ã‚·ãƒ¼ãƒˆã‚’ä½œæˆã™ã‚‹ã€‚
+    Dim macroWbName As String                           'ãƒã‚¯ãƒ­ã®ãƒ–ãƒƒã‚¯å
+    Dim macroWsName As String                           'ãƒã‚¯ãƒ­ã®ã‚·ãƒ¼ãƒˆå
+    Dim path As String                                            'è©¦é¨“ä»•æ§˜æ›¸ã®é…ç½®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
+    Dim wbNum As Integer                                     'è©¦é¨“ä»•æ§˜æ›¸æ•°
+    Dim wbName As String                                     'è©¦é¨“ä»•æ§˜æ›¸ã®ãƒ–ãƒƒã‚¯å
+    Dim wsName As String                                     'è©¦é¨“ä»•æ§˜æ›¸ã®ã‚·ãƒ¼ãƒˆå
+    Dim executingDate As String                            'å®Ÿè¡Œæ—¥
+    Dim variationKW As String                                'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã‚’æ¢ã™ãŸã‚ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
+    Dim ws As Worksheets                                      'ï¼Ÿ
+    Dim inputedexecutingDateCell As Range         'å®Ÿè¡Œæ—¥ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒ«
+    Dim toCellsInVariationRng As Range                'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã®å·¦ä¸Šã®ã‚»ãƒ«
+    Dim variationRng As Range                              'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢
+    Dim variationMaxNum As Integer                     'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã®æœ€å¤§æ•°
+    Dim testCaseNum As Integer                           'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹æ•°
+    Dim toCellsInVariationRngRow As Integer       'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã®å·¦ä¸Šã®ã‚»ãƒ«ã®è¡Œç•ªå·
+    Dim toCellsInVariationRngColumn As Integer  'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã®å·¦ä¸Šã®ã‚»ãƒ«ã®åˆ—ç•ªå·
+    Dim endCellsInVariationRng As Range             'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã®å³ä¸‹ã®ã‚»ãƒ«
+    Dim columnId As String                                    'ã‚»ãƒ«ã®åˆ—ç•ªå·(ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆ)
+    Dim aggregateTableName As String                'é›†è¨ˆè¡¨ã®åå‰
     
     Application.ScreenUpdating = False
-    'ƒ}ƒNƒƒuƒbƒN‚ÌƒuƒbƒN–¼AƒV[ƒg–¼A“ú•t–¼AƒL[ƒ[ƒhAŒ±d—l‘”‚ğprogressManageent.xlsm‚©‚çæ“¾
+    'ãƒã‚¯ãƒ­ãƒ–ãƒƒã‚¯ã®ãƒ–ãƒƒã‚¯åã€ã‚·ãƒ¼ãƒˆåã€æ—¥ä»˜åã€ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã€è©¦é¨“ä»•æ§˜æ›¸æ•°ã‚’progressManageent.xlsmã‹ã‚‰å–å¾—
     macroWbName = Range("C3").Value
     macroWsName = Range("C4").Value
     If Range("B11").Value = "" Then
@@ -31,87 +31,87 @@ Sub makeAggregateTable()
     End If
     variationKW = Workbooks(macroWbName).Worksheets(macroWsName).Range("C6").Value
     executingDate = Workbooks(macroWbName).Worksheets(macroWsName).Range("C7").Value
-    Debug.Print ("ƒ}ƒNƒ‚ÌƒuƒbƒN–¼F" & macroWbName)
-    Debug.Print ("ƒ}ƒNƒ‚ÌƒV[ƒg–¼F" & macroWsName)
-    Debug.Print ("Œ±d—l‘”F" & wbNum)
-    Debug.Print ("“ú•t–¼F" & executingDate)
-    Debug.Print ("ƒoƒŠƒG[ƒVƒ‡ƒ“‚ğŒŸõ‚·‚é‚½‚ß‚ÌƒL[ƒ[ƒhF" & variationKW)
+    Debug.Print ("ãƒã‚¯ãƒ­ã®ãƒ–ãƒƒã‚¯åï¼š" & macroWbName)
+    Debug.Print ("ãƒã‚¯ãƒ­ã®ã‚·ãƒ¼ãƒˆåï¼š" & macroWsName)
+    Debug.Print ("è©¦é¨“ä»•æ§˜æ›¸æ•°ï¼š" & wbNum)
+    Debug.Print ("æ—¥ä»˜åï¼š" & executingDate)
+    Debug.Print ("ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ¤œç´¢ã™ã‚‹ãŸã‚ã®ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼š" & variationKW)
     
     Dim l As Integer
     Dim count As Long
     count = 0
     For l = 0 To wbNum - 1
 L1:
-        'ƒ^[ƒQƒbƒg‚ÌŒ±d—l‘–¼AƒV[ƒg–¼Ai’»•\‚Ì‚ ‚éƒV[ƒg–¼‚ğæ“¾
+        'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®è©¦é¨“ä»•æ§˜æ›¸åã€ã‚·ãƒ¼ãƒˆåã€é€²æ—è¡¨ã®ã‚ã‚‹ã‚·ãƒ¼ãƒˆåã‚’å–å¾—
         wbName = Workbooks(macroWbName).Worksheets(macroWsName).Cells(10 + l, 2).Value
         wsName = Workbooks(macroWbName).Worksheets(macroWsName).Cells(10 + l, 3).Value
         aggregateTableName = Workbooks(macroWbName).Worksheets(macroWsName).Cells(10 + l, 4).Value
-        Debug.Print ("Œ±d—l‘–¼F" & wbName)
-        Debug.Print ("ƒV[ƒg–¼F" & wsName)
-        Debug.Print ("i’»•\‚Ì‚ ‚éƒV[ƒg–¼F" & aggregateTableName)
+        Debug.Print ("è©¦é¨“ä»•æ§˜æ›¸åï¼š" & wbName)
+        Debug.Print ("ã‚·ãƒ¼ãƒˆåï¼š" & wsName)
+        Debug.Print ("é€²æ—è¡¨ã®ã‚ã‚‹ã‚·ãƒ¼ãƒˆåï¼š" & aggregateTableName)
         
-        '‚à‚µæ‚Ù‚Ç‚Ü‚Å‚ÆŒ±d—l‘‚ªˆÙ‚È‚é‚È‚ç‚ÎV‚µ‚­Œ±d—l‘‚ğŠJ‚­
+        'ã‚‚ã—å…ˆã»ã©ã¾ã§ã¨è©¦é¨“ä»•æ§˜æ›¸ãŒç•°ãªã‚‹ãªã‚‰ã°æ–°ã—ãè©¦é¨“ä»•æ§˜æ›¸ã‚’é–‹ã
         If isSameTestingSpecification(macroWbName, macroWsName, l - 1) = False Then
             Call openTestingSpecification(getPath(macroWbName, macroWsName, "C5"), wbName)
         End If
         
-        'ƒV[ƒg“à‚ÅƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚ğ“Á’è‚·‚é
+        'ã‚·ãƒ¼ãƒˆå†…ã§ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã‚’ç‰¹å®šã™ã‚‹
         Workbooks(wbName).Worksheets(wsName).Activate
         Set toCellsInVariationRng = findCells(variationKW, usingRng(wbName, wsName))
         
-        'ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚ğ“Á’è‚Å‚«‚È‚©‚Á‚½‚Æ‚«‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+        'ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã‚’ç‰¹å®šã§ããªã‹ã£ãŸã¨ãã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
         If toCellsInVariationRng Is Nothing Then
-            MsgBox "Œ±d—l‘F" & wbName & "@ƒV[ƒg–¼F" & wsName & "‚ÌƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚Ì“Á’è‚É¸”sBskip‚µ‚Ü‚·B"
+            MsgBox "è©¦é¨“ä»•æ§˜æ›¸ï¼š" & wbName & "ã€€ã‚·ãƒ¼ãƒˆåï¼š" & wsName & "ã®ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã®ç‰¹å®šã«å¤±æ•—ã€‚skipã—ã¾ã™ã€‚"
             l = l + 1
             GoTo L1
         End If
         
-        '“Á’è‚Å‚«‚½ê‡‚Íˆ—‚ğ‘±s
+        'ç‰¹å®šã§ããŸå ´åˆã¯å‡¦ç†ã‚’ç¶šè¡Œ
         Set toCellsInVariationRng = Cells(findCells(variationKW, usingRng(wbName, wsName)).Row + 1, findCells(variationKW, usingRng(wbName, wsName)).Column + 1)
-        Debug.Print ("ƒoƒŠƒG[ƒVƒ‡ƒ“‚Ì”ÍˆÍ‚Ì¶ãF" & toCellsInVariationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
+        Debug.Print ("ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã®ç¯„å›²ã®å·¦ä¸Šï¼š" & toCellsInVariationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
         Set variationRng = findArea(toCellsInVariationRng)
-        Debug.Print ("ƒoƒŠƒG[ƒVƒ‡ƒ“‚Ì”ÍˆÍF" & variationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
+        Debug.Print ("ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã®ç¯„å›²ï¼š" & variationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
         
-        '“Á’è‚µ‚½ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚Ì”ÍˆÍ‚©‚çƒoƒŠƒG[ƒVƒ‡ƒ“Å‘å”‚ğæ“¾
+        'ç‰¹å®šã—ãŸãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã®ç¯„å›²ã‹ã‚‰ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³æœ€å¤§æ•°ã‚’å–å¾—
         variationMaxNum = variationRng.Rows.count
-        Debug.Print ("ƒoƒŠƒG[ƒVƒ‡ƒ“‚ÌÅ‘å”F" & variationMaxNum)
+        Debug.Print ("ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã®æœ€å¤§æ•°ï¼š" & variationMaxNum)
         
-        '“Á’è‚µ‚½ƒoƒŠƒG[ƒVƒ‡ƒ“ƒGƒŠƒA‚Ì”ÍˆÍ‚©‚çƒeƒXƒgƒP[ƒX”‚ğæ“¾
+        'ç‰¹å®šã—ãŸãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒªã‚¢ã®ç¯„å›²ã‹ã‚‰ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹æ•°ã‚’å–å¾—
         testCaseNum = variationRng.Columns.count
-        Debug.Print ("ƒeƒXƒgƒP[ƒX”F" & testCaseNum)
+        Debug.Print ("ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹æ•°ï¼š" & testCaseNum)
         Set endCellsInVariationRng = Cells(toCellsInVariationRng.Row + variationMaxNum, toCellsInVariationRng.Column)
         
-        'Às“ú‚ª“ü—Í‚³‚ê‚Ä‚¢‚éƒZƒ‹‚ÌˆÊ’u‚ğæ“¾
+        'å®Ÿè¡Œæ—¥ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒ«ã®ä½ç½®ã‚’å–å¾—
         Set inputedexecutingDateCell = findCells(executingDate, usingRng(wbName, wsName))
-        Debug.Print ("Às“ú‚ª“ü—Í‚³‚ê‚Ä‚¢‚éƒZƒ‹‚ÌˆÊ’uF" & inputedexecutingDateCell.Address(RowAbsolute:=False, ColumnAbsolute:=False))
+        Debug.Print ("å®Ÿè¡Œæ—¥ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒ«ã®ä½ç½®ï¼š" & inputedexecutingDateCell.Address(RowAbsolute:=False, ColumnAbsolute:=False))
         
-        'Às“ú‚ª“ü—Í‚³‚ê‚Ä‚¢‚éƒZƒ‹‚ÌˆÊ’u‚Ì“Á’è‚É¸”s‚µ‚½‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+        'å®Ÿè¡Œæ—¥ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒ«ã®ä½ç½®ã®ç‰¹å®šã«å¤±æ•—ã—ãŸæ™‚ã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
         If inputedexecutingDateCell Is Nothing Then
-            MsgBox "Œ±d—l‘F" & wbName & "@ƒV[ƒg–¼F" & wsName & "‚ÌÀs“ú‚ª“ü—Í‚³‚ê‚Ä‚¢‚éƒZƒ‹‚ÌˆÊ’u‚Ì“Á’è‚É¸”s‚µ‚Ü‚µ‚½Bskip‚µ‚Ü‚·"
+            MsgBox "è©¦é¨“ä»•æ§˜æ›¸ï¼š" & wbName & "ã€€ã‚·ãƒ¼ãƒˆåï¼š" & wsName & "ã®å®Ÿè¡Œæ—¥ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã‚»ãƒ«ã®ä½ç½®ã®ç‰¹å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚skipã—ã¾ã™"
             l = l + 1
             GoTo L1
         End If
         
-        'WŒv•\‚É‘‚«‚İ‚ğŠJn
+        'é›†è¨ˆè¡¨ã«æ›¸ãè¾¼ã¿ã‚’é–‹å§‹
         Dim i As Integer
             For i = 0 To testCaseNum - 1
                 Call writingInAggregateTable(i, count, aggregateTableName, wsName, toCellsInVariationRng, inputedexecutingDateCell, variationMaxNum)
             Next i
         count = count + testCaseNum
-        Debug.Print ("‡Œv”F" & count)
+        Debug.Print ("åˆè¨ˆæ•°ï¼š" & count)
         
-        '‚à‚µŒ±d—l‘‚ªˆÙ‚È‚é‚Ì‚Å‚ ‚ê‚ÎŒ±d—l‘‚ğ•Û‘¶‚µ‚Ä•Â‚¶‚é
+        'ã‚‚ã—è©¦é¨“ä»•æ§˜æ›¸ãŒç•°ãªã‚‹ã®ã§ã‚ã‚Œã°è©¦é¨“ä»•æ§˜æ›¸ã‚’ä¿å­˜ã—ã¦é–‰ã˜ã‚‹
         If isSameTestingSpecification(macroWbName, macroWsName, l) = False Then
             Call closeTestingSpecification(wbName)
             count = 0
         End If
         Next l
         Application.ScreenUpdating = True
-        MsgBox "i’»ŠÇ—•\‚Ìì¬‚ªŠ®—¹‚µ‚Ü‚µ‚½B"
+        MsgBox "é€²æ—ç®¡ç†è¡¨ã®ä½œæˆãŒå®Œäº†ã—ã¾ã—ãŸã€‚"
 End Sub
 
 Sub addAggregateTable()
-    'ŠeŒ±d—l‘‚Éi’»ŠÇ—•\‚ÌƒV[ƒg‚ğ’Ç‰Á‚·‚éB
+    'å„è©¦é¨“ä»•æ§˜æ›¸ã«é€²æ—ç®¡ç†è¡¨ã®ã‚·ãƒ¼ãƒˆã‚’è¿½åŠ ã™ã‚‹ã€‚
     Dim wbName As String
     Dim wsName As String
     Dim path As String
@@ -124,59 +124,59 @@ Sub addAggregateTable()
     wsName = ActiveSheet.Range("C4").Value
     path = getPath(wbName, wsName, "C5")
     addWsName = Range("C6").Value
-    Debug.Print ("ƒ}ƒNƒ‚ÌƒuƒbƒN–¼F" & wbName)
-    Debug.Print ("ƒ}ƒNƒ‚ÌƒV[ƒg–¼F" & wsName)
-    Debug.Print ("ƒV[ƒg’Ç‰Á‚·‚éƒuƒbƒN‚ª”z’u‚³‚ê‚Ä‚¢‚éƒpƒXF" & path)
-    'Debug.Print ("ƒV[ƒg’Ç‰Á‚·‚éƒuƒbƒN”F" & addWsCount)
-    Debug.Print ("ƒV[ƒg’Ç‰Á‚·‚éƒuƒbƒN–¼F" & testingSpecificationName)
+    Debug.Print ("ãƒã‚¯ãƒ­ã®ãƒ–ãƒƒã‚¯åï¼š" & wbName)
+    Debug.Print ("ãƒã‚¯ãƒ­ã®ã‚·ãƒ¼ãƒˆåï¼š" & wsName)
+    Debug.Print ("ã‚·ãƒ¼ãƒˆè¿½åŠ ã™ã‚‹ãƒ–ãƒƒã‚¯ãŒé…ç½®ã•ã‚Œã¦ã„ã‚‹ãƒ‘ã‚¹ï¼š" & path)
+    'Debug.Print ("ã‚·ãƒ¼ãƒˆè¿½åŠ ã™ã‚‹ãƒ–ãƒƒã‚¯æ•°ï¼š" & addWsCount)
+    Debug.Print ("ã‚·ãƒ¼ãƒˆè¿½åŠ ã™ã‚‹ãƒ–ãƒƒã‚¯åï¼š" & testingSpecificationName)
     
-    'ƒV[ƒg’Ç‰Á‘ÎÛ‚ÌŒ±d—l‘‚ğæ“¾‚·‚é
+    'ã‚·ãƒ¼ãƒˆè¿½åŠ å¯¾è±¡ã®è©¦é¨“ä»•æ§˜æ›¸ã‚’å–å¾—ã™ã‚‹
     testingSpecificationName = Dir(path & "*.xls*")
-    Debug.Print ("Œ±d—l‘–¼F" & testingSpecificationName)
+    Debug.Print ("è©¦é¨“ä»•æ§˜æ›¸åï¼š" & testingSpecificationName)
     
-    'ƒtƒ@ƒCƒ‹‚ª‚È‚©‚Á‚½‚Æ‚«‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+    'ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã‹ã£ãŸã¨ãã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
     If testingSpecificationName = "" Then
-        MsgBox "Œ±d—l‘‚ª‘¶İ‚µ‚Ü‚¹‚ñB"
+        MsgBox "è©¦é¨“ä»•æ§˜æ›¸ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚"
         Exit Sub
     End If
     
-    'ƒtƒ@ƒCƒ‹–¼‚ğ‡ŸŠJ‚­
+    'ãƒ•ã‚¡ã‚¤ãƒ«åã‚’é †æ¬¡é–‹ã
     Do While testingSpecificationName <> ""
 L2:
-        Debug.Print ("ŠJ‚­Œ±d—l‘–¼F" & testingSpecificationName)
+        Debug.Print ("é–‹ãè©¦é¨“ä»•æ§˜æ›¸åï¼š" & testingSpecificationName)
         Call openTestingSpecification(path, testingSpecificationName)
         
-        '//’Ç‰Á‚·‚éƒV[ƒg‚Æ“¯–¼‚ÌƒV[ƒg‚ª‘¶İ‚µ‚½‚Æ‚«‚Ííœ‚·‚é
+        '//è¿½åŠ ã™ã‚‹ã‚·ãƒ¼ãƒˆã¨åŒåã®ã‚·ãƒ¼ãƒˆãŒå­˜åœ¨ã—ãŸã¨ãã¯å‰Šé™¤ã™ã‚‹
         If isSheetDuplicationCheck(addWsName) = True Then
-            '//ƒuƒbƒN‚ª‹¤—L‚©”r‘¼“I‚©ƒ`ƒFƒbƒNB‹¤—L‚Å‚ ‚ê‚Î”r‘¼“I‚É‚·‚éB
+            '//ãƒ–ãƒƒã‚¯ãŒå…±æœ‰ã‹æ’ä»–çš„ã‹ãƒã‚§ãƒƒã‚¯ã€‚å…±æœ‰ã§ã‚ã‚Œã°æ’ä»–çš„ã«ã™ã‚‹ã€‚
             If Workbooks(testingSpecificationName).MultiUserEditing = True Then
-               '//‹¤—L‚ğŠO‚·
+               '//å…±æœ‰ã‚’å¤–ã™
                 Workbooks(testingSpecificationName).UnprotectSharing
                 Workbooks(testingSpecificationName).ExclusiveAccess
             End If
-            '//ƒV[ƒgíœ
+            '//ã‚·ãƒ¼ãƒˆå‰Šé™¤
             Application.DisplayAlerts = False
             Workbooks(testingSpecificationName).Worksheets(addWsName).Delete
             Application.DisplayAlerts = True
-            '//‹¤—L‚É‚·‚é
+            '//å…±æœ‰ã«ã™ã‚‹
             '//Workbooks(testingSpecificationName).ProtectSharing
         End If
             
-        'ƒV[ƒg‚ğ’Ç‰Á
+        'ã‚·ãƒ¼ãƒˆã‚’è¿½åŠ 
         Call addNewWorksheets(testingSpecificationName, addWsName)
         
-        '’Ç‰ÁÏ‚İ‚ÌŒ±d—l‘‚ğ•Â‚¶‚éB
+        'è¿½åŠ æ¸ˆã¿ã®è©¦é¨“ä»•æ§˜æ›¸ã‚’é–‰ã˜ã‚‹ã€‚
         Call closeTestingSpecification(testingSpecificationName)
         testingSpecificationName = Dir()
     Loop
     
     Application.ScreenUpdating = True
     
-    MsgBox "ƒV[ƒg‚Ì’Ç‰Á‚ªŠ®—¹‚µ‚Ü‚µ‚½B"
+    MsgBox "ã‚·ãƒ¼ãƒˆã®è¿½åŠ ãŒå®Œäº†ã—ã¾ã—ãŸã€‚"
 End Sub
 
 Sub transcription()
-    'ŠeŒ±Œ±d—l‘‚Ìi’»ŠÇ—•\ƒV[ƒg‚©‚çƒ}ƒXƒ^[‚Ö“]‹L‚·‚é
+    'å„è©¦é¨“è©¦é¨“ä»•æ§˜æ›¸ã®é€²æ—ç®¡ç†è¡¨ã‚·ãƒ¼ãƒˆã‹ã‚‰ãƒã‚¹ã‚¿ãƒ¼ã¸è»¢è¨˜ã™ã‚‹
     Dim macroWb As String
     Dim macroWs As String
     Dim pathOfTestingSpecification As String
@@ -213,48 +213,48 @@ Sub transcription()
     aggregateTableName = ActiveSheet.Range("C9")
     timeStampCells = ActiveSheet.Range("C10")
     
-    '‘O“ú•ª‚ğã‘‚«‚·‚é‚©Šm”F‚·‚é
-    rslt = MsgBox("‘O“ú•ª‚ğã‘‚«‚µ‚Ü‚·‚©H", Buttons:=vbYesNo)
+    'å‰æ—¥åˆ†ã‚’ä¸Šæ›¸ãã™ã‚‹ã‹ç¢ºèªã™ã‚‹
+    rslt = MsgBox("å‰æ—¥åˆ†ã‚’ä¸Šæ›¸ãã—ã¾ã™ã‹ï¼Ÿ", Buttons:=vbYesNo)
     If rslt = vbYes Then
         overWritingFlag = True
     Else
         overWritingFlag = False
     End If
     
-    'i’»ŠÇ—•\_ƒoƒŠƒG[ƒVƒ‡ƒ“.xlsx‚ğŠJ‚­
+    'é€²æ—ç®¡ç†è¡¨_ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³.xlsxã‚’é–‹ã
     Call openTestingSpecification(pathOfVariationMngWb, variationMngWb)
     Call checkFilterModeStatus(Worksheets(variationMngWs))
     
-    'overWritingFlag=true‚Ì‚Æ‚«Aƒf[ƒ^‚ğ‘O“ú€–Ú‚ÉˆÚ“®
+    'overWritingFlag=trueã®ã¨ãã€ãƒ‡ãƒ¼ã‚¿ã‚’å‰æ—¥é …ç›®ã«ç§»å‹•
     If overWritingFlag = True Then
         Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:L10000").Copy Range("M9")
     End If
     
-    '‚±‚±‚©‚ç“]‹L‚ğŠJn‚·‚é
-    'WŒv‘ÎÛ‚ÌŒ±d—l‘–¼‚ğæ“¾
+    'ã“ã“ã‹ã‚‰è»¢è¨˜ã‚’é–‹å§‹ã™ã‚‹
+    'é›†è¨ˆå¯¾è±¡ã®è©¦é¨“ä»•æ§˜æ›¸åã‚’å–å¾—
     testingSpecification = Dir(pathOfTestingSpecification & "*.xls*")
-    Debug.Print ("Œ±d—l‘–¼F" & testingSpecification)
+    Debug.Print ("è©¦é¨“ä»•æ§˜æ›¸åï¼š" & testingSpecification)
     
-    'ƒtƒ@ƒCƒ‹‚ª‚È‚©‚Á‚½‚Æ‚«‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+    'ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã‹ã£ãŸã¨ãã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
     If testingSpecification = "" Then
-        MsgBox "Excelƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñB"
+        MsgBox "Excelãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
         Exit Sub
     End If
     
-    'ƒtƒ@ƒCƒ‹–¼‚ğ‡ŸŠJ‚­
+    'ãƒ•ã‚¡ã‚¤ãƒ«åã‚’é †æ¬¡é–‹ã
     Do While testingSpecification <> ""
-        Debug.Print ("ŠJ‚­Œ±d—l‘–¼F" & testingSpecification)
+        Debug.Print ("é–‹ãè©¦é¨“ä»•æ§˜æ›¸åï¼š" & testingSpecification)
         
         Call openTestingSpecification(pathOfTestingSpecification, testingSpecification)
         
-        '“]‹L‚·‚éƒeƒXƒgƒP[ƒX‚Ì”‚ğŒvZ‚·‚é
+        'è»¢è¨˜ã™ã‚‹ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ã®æ•°ã‚’è¨ˆç®—ã™ã‚‹
         Workbooks(testingSpecification).Worksheets(aggregateTableName).Activate
         num = Range(Workbooks(testingSpecification).Worksheets(aggregateTableName).Range("B4"), Workbooks(testingSpecification).Worksheets(aggregateTableName).Range("B4").End(xlDown)).Rows.count
-        Debug.Print ("ƒP[ƒX”F" & num)
+        Debug.Print ("ã‚±ãƒ¼ã‚¹æ•°ï¼š" & num)
         
         For i = 0 To num - 1
 L3:
-            '“]‹L‚É•K—v‚Èî•ñ‚ğæ“¾
+            'è»¢è¨˜ã«å¿…è¦ãªæƒ…å ±ã‚’å–å¾—
             wsName = Cells(4 + i, 2).Value
             caseNum = Cells(4 + i, 3).Value
             executingDate = Cells(4 + i, 4).Value
@@ -266,20 +266,20 @@ L3:
             remaining = Cells(4 + i, 10).Value
             sum = Cells(4 + i, 11).Value
             
-            '“]‹Læ‚ÌƒZƒ‹ˆÊ’u‚ğæ“¾
+            'è»¢è¨˜å…ˆã®ã‚»ãƒ«ä½ç½®ã‚’å–å¾—
             searchWord = testingSpecification & wsName & caseNum
-            Debug.Print ("ŒŸõƒ[ƒh" & searchWord)
+            Debug.Print ("æ¤œç´¢ãƒ¯ãƒ¼ãƒ‰" & searchWord)
             'Workbooks(variationMngWb).Worksheets(variationMngWs).Activate
             Set copyTarget = findCells(searchWord, Workbooks(variationMngWb).Worksheets(variationMngWs).Range("AB:AB"))
             
-            '“]‹Læ‚ÌƒZƒ‹ˆÊ’u‚ğæ“¾‚Å‚«‚È‚©‚Á‚½‚Æ‚«‚ÌƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO
+            'è»¢è¨˜å…ˆã®ã‚»ãƒ«ä½ç½®ã‚’å–å¾—ã§ããªã‹ã£ãŸã¨ãã®ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°
             If copyTarget Is Nothing Then
-                MsgBox "Œ±d—l‘–¼F" & testingSpecification & "ƒV[ƒg–¼F" & wsName & "ƒP[ƒX”Ô†F" & caseNum & "‚Ì“]‹Læ‚ÌƒZƒ‹ˆÊ’u‚Ìæ“¾¸”sBˆ—‚ğskip‚µ‚Ü‚·B"
+                MsgBox "è©¦é¨“ä»•æ§˜æ›¸åï¼š" & testingSpecification & "ã‚·ãƒ¼ãƒˆåï¼š" & wsName & "ã‚±ãƒ¼ã‚¹ç•ªå·ï¼š" & caseNum & "ã®è»¢è¨˜å…ˆã®ã‚»ãƒ«ä½ç½®ã®å–å¾—å¤±æ•—ã€‚å‡¦ç†ã‚’skipã—ã¾ã™ã€‚"
                 i = i + 1
                 GoTo L3
             End If
             
-            '“]‹L
+            'è»¢è¨˜
             Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 5) = executingDate
             Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 6) = result
             Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 7) = faultNum
@@ -290,20 +290,20 @@ L3:
             Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 12) = sum
         Next i
         
-        '“]‹L‚ªŠ®—¹‚µ‚½Œ±d—l‘‚ğ•Â‚¶‚é
+        'è»¢è¨˜ãŒå®Œäº†ã—ãŸè©¦é¨“ä»•æ§˜æ›¸ã‚’é–‰ã˜ã‚‹
         closeTestingSpecification (testingSpecification)
         
         testingSpecification = Dir()
     Loop
     
-    'ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ğ‹L“ü
+    'ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã‚’è¨˜å…¥
     Dim timeStamp As String
-    timeStamp = Format(Now, "yyyy/mm/dd/@hh:mm:ss")
-    Workbooks(variationMngWb).Worksheets(variationMngWs).Range(timeStampCells).Value = "XV“úF" & timeStamp
+    timeStamp = Format(Now, "yyyy/mm/dd/ã€€hh:mm:ss")
+    Workbooks(variationMngWb).Worksheets(variationMngWs).Range(timeStampCells).Value = "æ›´æ–°æ—¥æ™‚ï¼š" & timeStamp
     
     Application.ScreenUpdating = False
     
-    MsgBox "“]‹LŠ®—¹"
+    MsgBox "è»¢è¨˜å®Œäº†"
 End Sub
 
 Function getPath(ByVal wbName As String, ByVal wsName As String, ByVal rngAddress As String) As String
@@ -317,7 +317,7 @@ End Function
 
 Function closeTestingSpecification(ByVal wbName As String)
     Application.DisplayAlerts = False
-    Debug.Print ("•Â‚¶‚éŒ±d—l‘–¼F" & wbName)
+    Debug.Print ("é–‰ã˜ã‚‹è©¦é¨“ä»•æ§˜æ›¸åï¼š" & wbName)
     Workbooks(wbName).Save
     Workbooks(wbName).Close
     Application.DisplayAlerts = True
@@ -338,10 +338,10 @@ Function usingRng(ByVal wbName As String, ByVal wsName As String) As Range
 End Function
 
 Function findArea(ByVal rng As Range) As Range
-    'ƒP[ƒX‚ª1Œ‚Ì‚İ‚©ƒ`ƒFƒbƒN
+    'ã‚±ãƒ¼ã‚¹ãŒ1ä»¶ã®ã¿ã‹ãƒã‚§ãƒƒã‚¯
     If Cells(rng.Row, rng.Column + 1).Value = "" Then
         Set findArea = Range(rng, rng.End(xlDown))
-        Debug.Print ("ƒP[ƒX‚Í1Œ‚Æ”F¯")
+        Debug.Print ("ã‚±ãƒ¼ã‚¹ã¯1ä»¶ã¨èªè­˜")
     Else
         Set findArea = Range(rng, rng.End(xlDown).End(xlToRight))
     End If
@@ -354,27 +354,27 @@ Function writingInAggregateTable(ByVal i As Integer, _
                                  ByVal toCellsInVariationRng As Range, _
                                  ByVal inputedexecutingDateCell As Range, _
                                  ByVal variationMaxNum As Integer)
-        'ƒV[ƒg–¼‚ğŠY“–ƒZƒ‹‚É“ü—Í
+        'ã‚·ãƒ¼ãƒˆåã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
         Worksheets(aggregateTableName).Cells(4 + i + count, 2) = wsName
-        'ƒP[ƒX”Ô†‚ğŠY“–ƒZƒ‹‚É“ü—Í
+        'ã‚±ãƒ¼ã‚¹ç•ªå·ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
         Worksheets(aggregateTableName).Cells(4 + i + count, 3) = i + 1
-        'ƒZƒ‹‚Ì—ñ”Ô†‚ğ”š‚©‚ç‰pŒê‚É•ÏŠ·
+        'ã‚»ãƒ«ã®åˆ—ç•ªå·ã‚’æ•°å­—ã‹ã‚‰è‹±èªã«å¤‰æ›
         columnId = columnNumberToAlphabet(toCellsInVariationRng.Column + i)
-        'Às“ú‚ğ•\¦‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
-        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "=0," & """" & "–¢‘ÅŒ®" & """" & "," & "TEXT('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "," & """" & "yyyy/mm/dd" & """" & "))"
-        '//ÀsŒ‹‰Ê‚ğ•\¦‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
-        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & "=" & """" & """" & "," & """" & "–¢‘ÅŒ®" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & " )"
-        '//áŠQ”Ô†‚ğ•\¦‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
-        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & "=" & """" & """" & "," & """" & "–¢‘ÅŒ®" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & " )"
-        '//ÀsÒ‚ğ•\¦‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
-        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & "=" & """" & """" & "," & """" & "–¢‘ÅŒ®" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & " )"
-        '//Às‹æ•ª‚ğ•\¦‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
-        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & "=" & """" & """" & "," & """" & "–¢‘ÅŒ®" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & " )"
-        'ƒeƒXƒgƒP[ƒX‚É•R‚Ã‚­"¡"‚Ì”‚ğƒJƒEƒ“ƒg‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
-        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & "¡" & """" & ")"
-        'ƒeƒXƒgƒP[ƒX‚É•R‚Ã‚­" "‚Ì”‚ğƒJƒEƒ“ƒg‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
-        Worksheets(aggregateTableName).Cells(4 + i + count, 10) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & " " & """" & ")"
-        'ƒeƒXƒgƒP[ƒX‚É•R‚Ã‚­ƒoƒŠƒG[ƒVƒ‡ƒ“”‚ğŒv‘ª‚·‚é”®‚ğŠY“–ƒZƒ‹‚É“ü—Í
+        'å®Ÿè¡Œæ—¥ã‚’è¡¨ç¤ºã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
+        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "=0," & """" & "æœªæ‰“éµ" & """" & "," & "TEXT('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "," & """" & "yyyy/mm/dd" & """" & "))"
+        '//å®Ÿè¡Œçµæœã‚’è¡¨ç¤ºã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
+        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & " )"
+        '//éšœå®³ç•ªå·ã‚’è¡¨ç¤ºã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
+        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & " )"
+        '//å®Ÿè¡Œè€…ã‚’è¡¨ç¤ºã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
+        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & " )"
+        '//å®Ÿè¡ŒåŒºåˆ†ã‚’è¡¨ç¤ºã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
+        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & " )"
+        'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ã«ç´ã¥ã"â– "ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
+        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & "â– " & """" & ")"
+        'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ã«ç´ã¥ã"â–¡"ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
+        Worksheets(aggregateTableName).Cells(4 + i + count, 10) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & "â–¡" & """" & ")"
+        'ãƒ†ã‚¹ãƒˆã‚±ãƒ¼ã‚¹ã«ç´ã¥ããƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³æ•°ã‚’è¨ˆæ¸¬ã™ã‚‹æ•°å¼ã‚’è©²å½“ã‚»ãƒ«ã«å…¥åŠ›
         Worksheets(aggregateTableName).Cells(4 + i + count, 11) = "=SUM(I" & (4 + i + count) & ":J" & (4 + i + count) & ")"
 End Function
 
@@ -394,17 +394,17 @@ Function addNewWorksheets(ByVal wbName As String, ByVal wsName As String)
     Dim newWorkSheet As Worksheet
     Set newWorkSheet = Worksheets.add()
     newWorkSheet.Name = wsName
-    Debug.Print ("’Ç‰Á")
-    Workbooks(wbName).Worksheets(wsName).Range("B3") = "ƒV[ƒg–¼"
-    Workbooks(wbName).Worksheets(wsName).Range("C3") = "ƒP[ƒX”Ô†"
-    Workbooks(wbName).Worksheets(wsName).Range("D3") = "Às“ú"
-    Workbooks(wbName).Worksheets(wsName).Range("E3") = "ÀsŒ‹‰Ê"
-    Workbooks(wbName).Worksheets(wsName).Range("F3") = "áŠQ”Ô†"
-    Workbooks(wbName).Worksheets(wsName).Range("G3") = "ÀsÒ"
-    Workbooks(wbName).Worksheets(wsName).Range("H3") = "Às‹æ•ª"
-    Workbooks(wbName).Worksheets(wsName).Range("I3") = "¡‚Ì”"
-    Workbooks(wbName).Worksheets(wsName).Range("J3") = " ‚Ì”"
-    Workbooks(wbName).Worksheets(wsName).Range("K3") = "‘”"
+    Debug.Print ("è¿½åŠ ")
+    Workbooks(wbName).Worksheets(wsName).Range("B3") = "ã‚·ãƒ¼ãƒˆå"
+    Workbooks(wbName).Worksheets(wsName).Range("C3") = "ã‚±ãƒ¼ã‚¹ç•ªå·"
+    Workbooks(wbName).Worksheets(wsName).Range("D3") = "å®Ÿè¡Œæ—¥"
+    Workbooks(wbName).Worksheets(wsName).Range("E3") = "å®Ÿè¡Œçµæœ"
+    Workbooks(wbName).Worksheets(wsName).Range("F3") = "éšœå®³ç•ªå·"
+    Workbooks(wbName).Worksheets(wsName).Range("G3") = "å®Ÿè¡Œè€…"
+    Workbooks(wbName).Worksheets(wsName).Range("H3") = "å®Ÿè¡ŒåŒºåˆ†"
+    Workbooks(wbName).Worksheets(wsName).Range("I3") = "â– ã®æ•°"
+    Workbooks(wbName).Worksheets(wsName).Range("J3") = "â–¡ã®æ•°"
+    Workbooks(wbName).Worksheets(wsName).Range("K3") = "ç·æ•°"
 End Function
 
 Function isSheetDuplicationCheck(ByVal wsName As String) As Boolean
@@ -415,12 +415,12 @@ Function isSheetDuplicationCheck(ByVal wsName As String) As Boolean
 End Function
 
 Function checkFilterModeStatus(ByVal ws As Worksheet)
-    'ƒI[ƒgƒtƒBƒ‹ƒ^–¢İ’è‚Íˆ—‚ğ”²‚¯‚é
+    'ã‚ªãƒ¼ãƒˆãƒ•ã‚£ãƒ«ã‚¿æœªè¨­å®šæ™‚ã¯å‡¦ç†ã‚’æŠœã‘ã‚‹
     If (ws.AutoFilterMode = False) Then
         Exit Function
     End If
     
-    'i‚è‚İ‚³‚ê‚Ä‚¢‚éê‡
+    'çµã‚Šè¾¼ã¿ã•ã‚Œã¦ã„ã‚‹å ´åˆ
     If (ws.AutoFilter.FilterMode = True) Then
         ws.AutoFilterMode = False
     End If
