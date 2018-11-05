@@ -1,4 +1,4 @@
-Sub makeAggregateTable()
+﻿Sub makeAggregateTable()
     '各試験仕様書のにバリエーションを管理するための管理シートを作成する。
     Dim macroWbName As String                           'マクロのブック名
     Dim macroWsName As String                           'マクロのシート名
@@ -127,7 +127,7 @@ Sub addAggregateTable()
     Debug.Print ("マクロのブック名：" & wbName)
     Debug.Print ("マクロのシート名：" & wsName)
     Debug.Print ("シート追加するブックが配置されているパス：" & path)
-    'Debug.Print ("シート追加するブック数：" & addWsCount)
+    Debug.Print ("シート追加するブック数：" & addWsCount)
     Debug.Print ("シート追加するブック名：" & testingSpecificationName)
     
     'シート追加対象の試験仕様書を取得する
@@ -142,7 +142,6 @@ Sub addAggregateTable()
     
     'ファイル名を順次開く
     Do While testingSpecificationName <> ""
-L2:
         Debug.Print ("開く試験仕様書名：" & testingSpecificationName)
         Call openTestingSpecification(path, testingSpecificationName)
         
@@ -164,7 +163,7 @@ L2:
             
         'シートを追加
         Call addNewWorksheets(testingSpecificationName, addWsName)
-        
+        Call makeInstrumentationArea(testingSpecificationName, addWsName)
         '追加済みの試験仕様書を閉じる。
         Call closeTestingSpecification(testingSpecificationName)
         testingSpecificationName = Dir()
@@ -392,19 +391,29 @@ End Function
 
 Function addNewWorksheets(ByVal wbName As String, ByVal wsName As String)
     Dim newWorkSheet As Worksheet
-    Set newWorkSheet = Worksheets.add()
+    '//試験仕様書の左から二番目にシートを追加する
+    Set newWorkSheet = Worksheets.Add(Before:=Worksheets(2))
     newWorkSheet.Name = wsName
     Debug.Print ("追加")
     Workbooks(wbName).Worksheets(wsName).Range("B3") = "シート名"
     Workbooks(wbName).Worksheets(wsName).Range("C3") = "ケース番号"
-    Workbooks(wbName).Worksheets(wsName).Range("D3") = "実行日"
-    Workbooks(wbName).Worksheets(wsName).Range("E3") = "実行結果"
-    Workbooks(wbName).Worksheets(wsName).Range("F3") = "障害番号"
-    Workbooks(wbName).Worksheets(wsName).Range("G3") = "実行者"
-    Workbooks(wbName).Worksheets(wsName).Range("H3") = "実行区分"
-    Workbooks(wbName).Worksheets(wsName).Range("I3") = "■の数"
-    Workbooks(wbName).Worksheets(wsName).Range("J3") = "□の数"
-    Workbooks(wbName).Worksheets(wsName).Range("K3") = "総数"
+    Workbooks(wbName).Worksheets(wsName).Range("D3") = "観点"
+    Workbooks(wbName).Worksheets(wsName).Range("E3") = "実行日"
+    Workbooks(wbName).Worksheets(wsName).Range("F3") = "実行者"
+    Workbooks(wbName).Worksheets(wsName).Range("G3") = "実行結果"
+    Workbooks(wbName).Worksheets(wsName).Range("H3") = "障害番号"
+    Workbooks(wbName).Worksheets(wsName).Range("I3") = "実行区分/備考"
+End Function
+
+Function makeInstrumentationArea(ByVal wbName As String, ByVal wsName As String)
+        Workbooks(wbName).Worksheets(wsName).Range("L2").Interior.ColorIndex = 24
+        Workbooks(wbName).Worksheets(wsName).Range("L3") = "打鍵数"
+        Workbooks(wbName).Worksheets(wsName).Range("L4") = "=COUNTIF(E:E,L2)"
+        Workbooks(wbName).Worksheets(wsName).Range("M2") = "←検索した打鍵日を記入"
+        Workbooks(wbName).Worksheets(wsName).Range("M3") = "打鍵OK数"
+        Workbooks(wbName).Worksheets(wsName).Range("M4") = "=COUNTIFS(E:E,L2,G:G," & """" & "OK" & """" & ")"
+        Workbooks(wbName).Worksheets(wsName).Range("N3") = "成功率"
+        Workbooks(wbName).Worksheets(wsName).Range("N4") = "=IFERROR(TEXT(M4/L4," & """" & "0.0%" & """" & "),0)"
 End Function
 
 Function isSheetDuplicationCheck(ByVal wsName As String) As Boolean
