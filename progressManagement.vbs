@@ -160,6 +160,7 @@ Sub transcription()
     Dim i As Long
     Dim wsName As String
     Dim caseNum As String
+    Dim viewPoint As String
     Dim executingDate As String
     Dim result As String
     Dim faultNum As String
@@ -184,21 +185,21 @@ Sub transcription()
     timeStampCells = ActiveSheet.Range("C10")
     
     '前日分を上書きするか確認する
-    rslt = MsgBox("前日分を上書きしますか？", Buttons:=vbYesNo)
-    If rslt = vbYes Then
-        overWritingFlag = True
-    Else
-        overWritingFlag = False
-    End If
+    'rslt = MsgBox("前日分を上書きしますか？", Buttons:=vbYesNo)
+    'If rslt = vbYes Then
+    '    overWritingFlag = True
+    'Else
+    '    overWritingFlag = False
+    'End If
     
     '進捗管理表_バリエーション.xlsxを開く
     Call openTestingSpecification(pathOfVariationMngWb, variationMngWb)
     Call checkFilterModeStatus(Worksheets(variationMngWs))
     
     'overWritingFlag=trueのとき、データを前日項目に移動
-    If overWritingFlag = True Then
-        Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:L10000").Copy Range("M9")
-    End If
+    'If overWritingFlag = True Then
+    '    Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:L10000").Copy Range("M9")
+    'End If
     
     'ここから転記を開始する
     '集計対象の試験仕様書名を取得
@@ -212,57 +213,61 @@ Sub transcription()
     End If
     
     'ファイル名を順次開く
+    Dim j As String
+    j = 0
     Do While testingSpecification <> ""
         Debug.Print ("開く試験仕様書名：" & testingSpecification)
         
         Call openTestingSpecification(pathOfTestingSpecification, testingSpecification)
         
-        '転記するテストケースの数を計算する
+        '転記数を計算する
         Workbooks(testingSpecification).Worksheets(aggregateTableName).Activate
         num = Range(Workbooks(testingSpecification).Worksheets(aggregateTableName).Range("B4"), Workbooks(testingSpecification).Worksheets(aggregateTableName).Range("B4").End(xlDown)).Rows.count
-        Debug.Print ("ケース数：" & num)
+        Debug.Print ("転記数：" & num)
         
         For i = 0 To num - 1
-L3:
+'L3:
             '転記に必要な情報を取得
             wsName = Cells(4 + i, 2).Value
             caseNum = Cells(4 + i, 3).Value
-            executingDate = Cells(4 + i, 4).Value
-            result = Cells(4 + i, 5).Value
-            faultNum = Cells(4 + i, 6).Value
-            tester = Cells(4 + i, 7).Value
-            executingKubun = Cells(4 + i, 8).Value
-            achievement = Cells(4 + i, 9).Value
-            remaining = Cells(4 + i, 10).Value
-            sum = Cells(4 + i, 11).Value
+            viewPoint = Cells(4 + i, 4).Value
+            executingDate = Cells(4 + i, 5).Value
+            tester = Cells(4 + i, 6).Value
+            result = Cells(4 + i, 7).Value
+            faultNum = Cells(4 + i, 8).Value
+            executingKubun = Cells(4 + i, 9).Value
+            'achievement = Cells(4 + i, 9).Value
+            'remaining = Cells(4 + i, 10).Value
+            'sum = Cells(4 + i, 11).Value
             
             '転記先のセル位置を取得
-            searchWord = testingSpecification & wsName & caseNum
-            Debug.Print ("検索ワード" & searchWord)
+            'searchWord = testingSpecification & wsName & caseNum
+            'Debug.Print ("検索ワード" & searchWord)
             'Workbooks(variationMngWb).Worksheets(variationMngWs).Activate
-            Set copyTarget = findCells(searchWord, Workbooks(variationMngWb).Worksheets(variationMngWs).Range("AB:AB"))
+            'Set copyTarget = findCells(searchWord, Workbooks(variationMngWb).Worksheets(variationMngWs).Range("AB:AB"))
             
             '転記先のセル位置を取得できなかったときのエラーハンドリング
-            If copyTarget Is Nothing Then
-                MsgBox "試験仕様書名：" & testingSpecification & "シート名：" & wsName & "ケース番号：" & caseNum & "の転記先のセル位置の取得失敗。処理をskipします。"
-                i = i + 1
-                GoTo L3
-            End If
+            'If copyTarget Is Nothing Then
+            '    MsgBox "試験仕様書名：" & testingSpecification & "シート名：" & wsName & "ケース番号：" & caseNum & "の転記先のセル位置の取得失敗。処理をskipします。"
+            '    i = i + 1
+            '    GoTo L3
+            'End If
             
             '転記
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 5) = executingDate
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 6) = result
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 7) = faultNum
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 8) = tester
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 9) = executingKubun
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 10) = achievement
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 11) = remaining
-            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(copyTarget.Row, 12) = sum
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 2) = testingSpecification
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 3) = wsName
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 4) = caseNum
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 5) = viewPoint
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 6) = executingDate
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 7) = tester
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 8) = result
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 9) = faultNum
+            Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 10) = executingKubun
         Next i
         
         '転記が完了した試験仕様書を閉じる
         closeTestingSpecification (testingSpecification)
-        
+        j = j + num
         testingSpecification = Dir()
     Loop
     
