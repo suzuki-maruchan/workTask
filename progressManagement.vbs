@@ -166,11 +166,7 @@ Sub transcription()
     Dim faultNum As String
     Dim tester As String
     Dim executingKubun As String
-    Dim achievement As String
-    Dim remaining As String
-    Dim sum As String
     Dim num As Long
-    Dim overWritingFlag As Boolean
     Dim rslt As VbMsgBoxResult
     
     Application.ScreenUpdating = False
@@ -184,22 +180,9 @@ Sub transcription()
     aggregateTableName = ActiveSheet.Range("C9")
     timeStampCells = ActiveSheet.Range("C10")
     
-    '前日分を上書きするか確認する
-    'rslt = MsgBox("前日分を上書きしますか？", Buttons:=vbYesNo)
-    'If rslt = vbYes Then
-    '    overWritingFlag = True
-    'Else
-    '    overWritingFlag = False
-    'End If
-    
     '進捗管理表_バリエーション.xlsxを開く
     Call openTestingSpecification(pathOfVariationMngWb, variationMngWb)
     Call checkFilterModeStatus(Worksheets(variationMngWs))
-    
-    'overWritingFlag=trueのとき、データを前日項目に移動
-    'If overWritingFlag = True Then
-    '    Workbooks(variationMngWb).Worksheets(variationMngWs).Range("E9:L10000").Copy Range("M9")
-    'End If
     
     'ここから転記を開始する
     '集計対象の試験仕様書名を取得
@@ -236,22 +219,6 @@ Sub transcription()
             result = Cells(4 + i, 7).Value
             faultNum = Cells(4 + i, 8).Value
             executingKubun = Cells(4 + i, 9).Value
-            'achievement = Cells(4 + i, 9).Value
-            'remaining = Cells(4 + i, 10).Value
-            'sum = Cells(4 + i, 11).Value
-            
-            '転記先のセル位置を取得
-            'searchWord = testingSpecification & wsName & caseNum
-            'Debug.Print ("検索ワード" & searchWord)
-            'Workbooks(variationMngWb).Worksheets(variationMngWs).Activate
-            'Set copyTarget = findCells(searchWord, Workbooks(variationMngWb).Worksheets(variationMngWs).Range("AB:AB"))
-            
-            '転記先のセル位置を取得できなかったときのエラーハンドリング
-            'If copyTarget Is Nothing Then
-            '    MsgBox "試験仕様書名：" & testingSpecification & "シート名：" & wsName & "ケース番号：" & caseNum & "の転記先のセル位置の取得失敗。処理をskipします。"
-            '    i = i + 1
-            '    GoTo L3
-            'End If
             
             '転記
             Workbooks(variationMngWb).Worksheets(variationMngWs).Cells(8 + j + i, 2) = testingSpecification
