@@ -6,17 +6,12 @@
     Dim wbNum As Integer                                     '試験仕様書数
     Dim wbName As String                                     '試験仕様書のブック名
     Dim wsName As String                                     '試験仕様書のシート名
-    Dim executingDate As String                            '実行日
     Dim variationKW As String                                'バリエーションエリアを探すためのキーワード
     Dim ws As Worksheets                                      '？
-    Dim inputedexecutingDateCell As Range         '実行日が定義されているセル
     Dim toCellsInVariationRng As Range                'バリエーションエリアの左上のセル
     Dim variationRng As Range                              'バリエーションエリア
     Dim variationMaxNum As Integer                     'バリエーションの最大数
     Dim testCaseNum As Integer                           'テストケース数
-    Dim toCellsInVariationRngRow As Integer       'バリエーションエリアの左上のセルの行番号
-    Dim toCellsInVariationRngColumn As Integer  'バリエーションエリアの左上のセルの列番号
-    Dim endCellsInVariationRng As Range             'バリエーションエリアの右下のセル
     Dim columnId As String                                    'セルの列番号(アルファベット)
     Dim aggregateTableName As String                '集計表の名前
     
@@ -30,7 +25,6 @@
         wbNum = Range(Workbooks(macroWbName).Worksheets(macroWsName).Range("B10"), Workbooks(macroWbName).Worksheets(macroWsName).Range("B10").End(xlDown)).Rows.count
     End If
     variationKW = Workbooks(macroWbName).Worksheets(macroWsName).Range("C6").Value
-    executingDate = Workbooks(macroWbName).Worksheets(macroWsName).Range("C7").Value
     Debug.Print ("マクロのブック名：" & macroWbName)
     Debug.Print ("マクロのシート名：" & macroWsName)
     Debug.Print ("試験仕様書数：" & wbNum)
@@ -67,32 +61,8 @@ L1:
         End If
         
         '特定できた場合は処理を続行
-        '#30対応でコメントアウト
-        'Set toCellsInVariationRng = Cells(findCells(variationKW, usingRng(wbName, wsName)).Row + 1, findCells(variationKW, usingRng(wbName, wsName)).Column + 1)
-        'Debug.Print ("バリエーションの範囲の左上：" & toCellsInVariationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
         Set variationRng = findArea(toCellsInVariationRng)
         Debug.Print ("バリエーションの範囲：" & variationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
-        
-        '#30対応でコメントアウト
-        '特定したバリエーションエリアの範囲からバリエーション最大数を取得
-        'variationMaxNum = (variationRng.Rows.count - 1) / testCaseNum
-        'Debug.Print ("バリエーションの最大数：" & variationMaxNum)
-        
-        '特定したバリエーションエリアの範囲からテストケース数を取得
-        'testCaseNum = toCellsInVariationRng.End(xlDown).Value
-        'Debug.Print ("テストケース数：" & testCaseNum)
-        
-        '実行日が入力されているセルの位置を取得
-        'Set inputedexecutingDateCell = findCells(executingDate, usingRng(wbName, wsName))
-        'Debug.Print ("実行日が入力されているセルの位置：" & inputedexecutingDateCell.Address(RowAbsolute:=False, ColumnAbsolute:=False))
-        
-        '実行日が入力されているセルの位置の特定に失敗した時のエラーハンドリング
-        'If inputedexecutingDateCell Is Nothing Then
-        '    MsgBox "試験仕様書：" & wbName & "　シート名：" & wsName & "の実行日が入力されているセルの位置の特定に失敗しました。skipします"
-        '    l = l + 1
-        '    GoTo L1
-        'End If
-        
         '集計表に書き込みを開始
         Dim i As Integer
             For i = 0 To (variationRng.Rows.count - 1) - 1
