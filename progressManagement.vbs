@@ -67,37 +67,38 @@ L1:
         End If
         
         '特定できた場合は処理を続行
-        Set toCellsInVariationRng = Cells(findCells(variationKW, usingRng(wbName, wsName)).Row + 1, findCells(variationKW, usingRng(wbName, wsName)).Column + 1)
-        Debug.Print ("バリエーションの範囲の左上：" & toCellsInVariationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
+        '#30対応でコメントアウト
+        'Set toCellsInVariationRng = Cells(findCells(variationKW, usingRng(wbName, wsName)).Row + 1, findCells(variationKW, usingRng(wbName, wsName)).Column + 1)
+        'Debug.Print ("バリエーションの範囲の左上：" & toCellsInVariationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
         Set variationRng = findArea(toCellsInVariationRng)
         Debug.Print ("バリエーションの範囲：" & variationRng.Address(RowAbsolute:=False, ColumnAbsolute:=False))
         
+        '#30対応でコメントアウト
         '特定したバリエーションエリアの範囲からバリエーション最大数を取得
-        variationMaxNum = variationRng.Rows.count
-        Debug.Print ("バリエーションの最大数：" & variationMaxNum)
+        'variationMaxNum = (variationRng.Rows.count - 1) / testCaseNum
+        'Debug.Print ("バリエーションの最大数：" & variationMaxNum)
         
         '特定したバリエーションエリアの範囲からテストケース数を取得
-        testCaseNum = variationRng.Columns.count
-        Debug.Print ("テストケース数：" & testCaseNum)
-        Set endCellsInVariationRng = Cells(toCellsInVariationRng.Row + variationMaxNum, toCellsInVariationRng.Column)
+        'testCaseNum = toCellsInVariationRng.End(xlDown).Value
+        'Debug.Print ("テストケース数：" & testCaseNum)
         
         '実行日が入力されているセルの位置を取得
-        Set inputedexecutingDateCell = findCells(executingDate, usingRng(wbName, wsName))
-        Debug.Print ("実行日が入力されているセルの位置：" & inputedexecutingDateCell.Address(RowAbsolute:=False, ColumnAbsolute:=False))
+        'Set inputedexecutingDateCell = findCells(executingDate, usingRng(wbName, wsName))
+        'Debug.Print ("実行日が入力されているセルの位置：" & inputedexecutingDateCell.Address(RowAbsolute:=False, ColumnAbsolute:=False))
         
         '実行日が入力されているセルの位置の特定に失敗した時のエラーハンドリング
-        If inputedexecutingDateCell Is Nothing Then
-            MsgBox "試験仕様書：" & wbName & "　シート名：" & wsName & "の実行日が入力されているセルの位置の特定に失敗しました。skipします"
-            l = l + 1
-            GoTo L1
-        End If
+        'If inputedexecutingDateCell Is Nothing Then
+        '    MsgBox "試験仕様書：" & wbName & "　シート名：" & wsName & "の実行日が入力されているセルの位置の特定に失敗しました。skipします"
+        '    l = l + 1
+        '    GoTo L1
+        'End If
         
         '集計表に書き込みを開始
         Dim i As Integer
-            For i = 0 To testCaseNum - 1
-                Call writingInAggregateTable(i, count, aggregateTableName, wsName, toCellsInVariationRng, inputedexecutingDateCell, variationMaxNum)
+            For i = 0 To (variationRng.Rows.count - 1) - 1
+                Call writingInAggregateTable(i, count, aggregateTableName, wsName, toCellsInVariationRng)
             Next i
-        count = count + testCaseNum
+        count = count + variationRng.Rows.count - 1
         Debug.Print ("合計数：" & count)
         
         'もし試験仕様書が異なるのであれば試験仕様書を保存して閉じる
@@ -105,9 +106,9 @@ L1:
             Call closeTestingSpecification(wbName)
             count = 0
         End If
-        Next l
-        Application.ScreenUpdating = True
-        MsgBox "進捗管理表の作成が完了しました。"
+    Next l
+    Application.ScreenUpdating = True
+    MsgBox "進捗管理表の作成が完了しました。"
 End Sub
 
 Sub addAggregateTable()
@@ -337,44 +338,36 @@ Function usingRng(ByVal wbName As String, ByVal wsName As String) As Range
 End Function
 
 Function findArea(ByVal rng As Range) As Range
-    'ケースが1件のみかチェック
-    If Cells(rng.Row, rng.Column + 1).Value = "" Then
-        Set findArea = Range(rng, rng.End(xlDown))
-        Debug.Print ("ケースは1件と認識")
-    Else
-        Set findArea = Range(rng, rng.End(xlDown).End(xlToRight))
-    End If
+     Dim columnNum As Integer
+     Dim rowNum As Integer
+     columnNum = Range(rng, rng.End(xlToRight)).Columns.count
+     rowNum = Range(rng, rng.End(xlDown)).Rows.count
+     Set findArea = Range(rng, Cells(rng.Row + rowNum - 1, rng.Column + columnNum - 1))
 End Function
 
 Function writingInAggregateTable(ByVal i As Integer, _
-                                 ByVal count As Long, _
-                                 ByVal aggregateTableName As String, _
-                                 ByVal wsName As String, _
-                                 ByVal toCellsInVariationRng As Range, _
-                                 ByVal inputedexecutingDateCell As Range, _
-                                 ByVal variationMaxNum As Integer)
-        'シート名を該当セルに入力
+                                                        ByVal count As Long, _
+                                                        ByVal aggregateTableName As String, _
+                                                        ByVal wsName As String, _
+                                                        ByVal toCellsInVariationRng As Range)
+        '//シート名を該当セルに入力
         Worksheets(aggregateTableName).Cells(4 + i + count, 2) = wsName
-        'ケース番号を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 3) = i + 1
-        'セルの列番号を数字から英語に変換
-        columnId = columnNumberToAlphabet(toCellsInVariationRng.Column + i)
-        '実行日を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "=0," & """" & "未打鍵" & """" & "," & "TEXT('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row & "," & """" & "yyyy/mm/dd" & """" & "))"
-        '//実行結果を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 2 & " )"
-        '//障害番号を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row - 1 & " )"
+        '//セルの列番号を数字から英語に変換
+        columnId = columnNumberToAlphabet(toCellsInVariationRng.Column)
+        '//ケース番号を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 3) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column) & toCellsInVariationRng.Row + 1 + i
+        '//観点を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 1) & toCellsInVariationRng.Row + 1 + i
+        '//実行日を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 2) & toCellsInVariationRng.Row + 1 + i
         '//実行者を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 1 & " )"
-        '//実行区分を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "=IF('" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & "=" & """" & """" & "," & """" & "-" & """" & "," & "'" & wsName & "'!" & columnId & inputedexecutingDateCell.Row + 5 & " )"
-        'テストケースに紐づく"■"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & "■" & """" & ")"
-        'テストケースに紐づく"□"の数をカウントする数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 10) = "=COUNTIF('" & wsName & "'!" & columnId & toCellsInVariationRng.Row & ":" & columnId & (toCellsInVariationRng.Row + variationMaxNum - 1) & "," & """" & "□" & """" & ")"
-        'テストケースに紐づくバリエーション数を計測する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 11) = "=SUM(I" & (4 + i + count) & ":J" & (4 + i + count) & ")"
+        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 3) & toCellsInVariationRng.Row + 1 + i
+        '//実行結果を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 4) & toCellsInVariationRng.Row + 1 + i
+        '//障害番号を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 5) & toCellsInVariationRng.Row + 1 + i
+        '//実行区分/備考を表示する数式を該当セルに入力
+        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 6) & toCellsInVariationRng.Row + 1 + i
 End Function
 
 Function isSameTestingSpecification(ByVal wb As String, ByVal ws As String, ByVal i As Integer) As Boolean
