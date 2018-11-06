@@ -1,4 +1,4 @@
-﻿Sub makeAggregateTable()
+Sub makeAggregateTable()
     '各試験仕様書のにバリエーションを管理するための管理シートを作成する。
     Dim macroWbName As String                           'マクロのブック名
     Dim macroWsName As String                           'マクロのシート名
@@ -301,15 +301,15 @@ Function writingInAggregateTable(ByVal i As Integer, _
         '//観点を該当セルに入力
         Worksheets(aggregateTableName).Cells(4 + i + count, 4) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 1) & toCellsInVariationRng.Row + 1 + i
         '//実行日を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 2) & toCellsInVariationRng.Row + 1 + i
+        Worksheets(aggregateTableName).Cells(4 + i + count, 5) = "=IF('" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 2) & toCellsInVariationRng.Row + 1 + i & "=0," & """" & "未打鍵" & """" & "," & "TEXT('" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 2) & toCellsInVariationRng.Row + 1 + i & "," & """" & "yyyy/mm/dd" & """" & "))"
         '//実行者を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 3) & toCellsInVariationRng.Row + 1 + i
+        Worksheets(aggregateTableName).Cells(4 + i + count, 6) = "=IF('" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 3) & toCellsInVariationRng.Row + 1 + i & "=" & """" & """" & "," & """" & "" & """" & "," & "'" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 3) & toCellsInVariationRng.Row + 1 + i & " )"
         '//実行結果を表示する数式を該当セルに入力
         Worksheets(aggregateTableName).Cells(4 + i + count, 7) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 4) & toCellsInVariationRng.Row + 1 + i
         '//障害番号を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 5) & toCellsInVariationRng.Row + 1 + i
+        Worksheets(aggregateTableName).Cells(4 + i + count, 8) = "=IF('" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 5) & toCellsInVariationRng.Row + 1 + i & "=" & """" & """" & "," & """" & "" & """" & "," & "'" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 5) & toCellsInVariationRng.Row + 1 + i & " )"
         '//実行区分/備考を表示する数式を該当セルに入力
-        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "='" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 6) & toCellsInVariationRng.Row + 1 + i
+        Worksheets(aggregateTableName).Cells(4 + i + count, 9) = "=IF('" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 6) & toCellsInVariationRng.Row + 1 + i & "=" & """" & """" & "," & """" & "" & """" & "," & "'" & wsName & "'!" & columnNumberToAlphabet(toCellsInVariationRng.Column + 6) & toCellsInVariationRng.Row + 1 + i & " )"
 End Function
 
 Function isSameTestingSpecification(ByVal wb As String, ByVal ws As String, ByVal i As Integer) As Boolean
